@@ -166,8 +166,10 @@
 
         </q-card>
 
-        
       </div>
+      <q-page-sticky position="bottom-right" :offset="[10, 10]">
+        <div class="text-caption">by Jaures Appia &#128526;</div>
+      </q-page-sticky>
 
   </q-page>
 </template>
