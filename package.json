@@ -13,8 +13,11 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
     "numeral": "^2.0.6",
+    "path": "^0.12.7",
     "quasar": "^1.0.0",
+    "serve-static": "^1.14.1",
     "vue-i18n": "^8.0.0"
   },
   "devDependencies": {
