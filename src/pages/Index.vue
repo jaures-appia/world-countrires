@@ -1,5 +1,6 @@
 <template>
   <q-page v-if="countries" class="q-pa-xs bgImage">
+    {{Math.max(...largestArea)}}
     <q-card class="transparent">
       <q-tabs
         v-model="tab"
@@ -9,14 +10,14 @@
         indicator-color="primary"
         narrow-indicator
       >
-        <q-tab name="accueil" label="Accueil" />
-        <q-tab name="stats" label="Statistique" />
+        <q-tab name="home" label="Home" />
+        <q-tab name="stats" label="Statistics" />
       </q-tabs>
 
       <q-separator />
 
       <q-tab-panels v-model="tab" animated class="transparent">
-        <q-tab-panel name="accueil">
+        <q-tab-panel name="home">
           <div class="row flex flex-center q-pa-md q-mb-md">
             <div class="col-lg-4 col-md-5 col-sm-8 col-xs-12">
               <div class="q-my-md text-bold text-center" style="font-size: 20px">Ready to learn about the countries of the world ?</div>
@@ -191,8 +192,79 @@
         </q-tab-panel>
 
         <q-tab-panel name="stats">
-          <div class="text-h6">Stats</div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          <div class="text-h5 text-center q-mt-md">
+            {{ this.countries.length }} Countries
+          </div>
+
+          <div class="row q-gutter-md justify-center q-my-sm">
+            <q-card class="col-4 q-pa-md">
+              <div class="text-h6 text-bold text-center">{{africanCountires}}</div>
+              <div class="text-center text-caption">countries of africa</div>
+            </q-card>
+
+            <q-card class="col-4 q-pa-md">
+              <div class="text-h6 text-bold text-center">{{americanCountires}}</div>
+              <div class="text-center text-caption">countries of americas</div>
+            </q-card>
+
+            <q-card class="col-4 q-pa-md">
+              <div class="text-h6 text-bold text-center">{{asiaCountires}}</div>
+              <div class="text-center text-caption">countries of asia</div>
+            </q-card>
+
+            <q-card class="col-4 q-pa-md">
+              <div class="text-h6 text-bold text-center">{{europaCountires}}</div>
+              <div class="text-center text-caption">countries of europe</div>
+            </q-card>
+
+            <q-card class="col-4 q-pa-md">
+              <div class="text-h6 text-bold text-center">{{oceaniaCountires}}</div>
+              <div class="text-center text-caption">countries of oceania</div>
+            </q-card>
+
+            <q-card class="col-4 q-pa-md">
+              <div class="text-h6 text-bold text-center">{{polarCountires}}</div>
+              <div class="text-center text-caption">countries of polar</div>
+            </q-card>
+          </div>
+
+          <q-carousel
+            v-model="slideStat"
+            animated
+            control-color="primary"
+            navigation
+            padding
+            infinite
+            class="text-dark transparent q-mt-md"
+          >
+            <q-carousel-slide name="1">
+              <div class="text-center text-h6">top 5 countries with the largest area</div>
+              <div class="text-center flex flex-center">
+                <div class="q-pb-sm">
+                  <apexcharts width="500" type="bar" :options="optionsChart" :series="series"></apexcharts>
+                </div>
+              </div>
+            </q-carousel-slide>
+
+            <q-carousel-slide name="2">
+              <div class="q-mt-md text-center">
+                top 5 countries with the smallest area
+              </div>
+            </q-carousel-slide>
+
+            <q-carousel-slide name="3">
+              <div class="q-mt-md text-center">
+                top 5 countries with the largest population
+              </div>
+            </q-carousel-slide>
+
+            <q-carousel-slide name="4">
+              <div class="q-mt-md text-center">
+                top 5 countries with the smallest population
+              </div>
+            </q-carousel-slide>
+          </q-carousel>
+
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -202,17 +274,40 @@
 
 <script>
 import numeral from 'numeral'
+import apexcharts from 'vue-apexcharts'
 
 export default {
   name: 'PageIndex',
+  components: { apexcharts},
   data(){
     return{
-      tab: 'accueil',
+      tab: 'home',
+      stats: "",
       slide: 1,
+      slideStat: "1",
       country: "",
       countries: [],
       url: "https://restcountries.eu/rest/v2/all",
       options: this.myCountries,
+      moreStats: [
+        "stat 1",
+        "stat 2",
+        "stat 3",
+      ],
+
+
+      optionsChart: {
+        chart: {
+          id: 'vuechart-example'
+        },
+        xaxis: {
+          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+        }
+      },
+      series: [{
+        name: 'series-1',
+        data: [30, 40, 45, 500, 49, 60, 70, 91, 950]
+      }]
     }
   },
   computed: {
@@ -242,6 +337,74 @@ export default {
     },
     cardWidth(){
       return this.$q.screen
+    },
+    africanCountires(){
+      let a = this.countries.map(c => c.region)
+      let compter = 0
+      a.forEach(item => {
+        if(item == "Africa"){
+          compter+=1
+        }
+      });
+      return compter
+    },
+    americanCountires(){
+      let a = this.countries.map(c => c.region)
+      let compter = 0
+      a.forEach(item => {
+        if(item == "Americas"){
+          compter+=1
+        }
+      });
+      return compter
+    },
+    asiaCountires(){
+      let a = this.countries.map(c => c.region)
+      let compter = 0
+      a.forEach(item => {
+        if(item == "Asia"){
+          compter+=1
+        }
+      });
+      return compter
+    },
+    europaCountires(){
+      let a = this.countries.map(c => c.region)
+      let compter = 0
+      a.forEach(item => {
+        if(item == "Europe"){
+          compter+=1
+        }
+      });
+      return compter
+    },
+    oceaniaCountires(){
+      let a = this.countries.map(c => c.region)
+      let compter = 0
+      a.forEach(item => {
+        if(item == "Oceania"){
+          compter+=1
+        }
+      });
+      return compter
+    },
+    polarCountires(){
+      let a = this.countries.map(c => c.region)
+      let compter = 0
+      a.forEach(item => {
+        if(item == "Polar"){
+          compter+=1
+        }
+      });
+      return compter
+    },
+    largestArea(){
+      let l = this.countries.map(c => c.area)
+      let tab = []
+      for (let index = 0; index < 5; index++) {
+        tab.push(Math.max(...l))
+      }
+      return this.countries.map(c => c.area)
     }
   },
   beforeMount(){
